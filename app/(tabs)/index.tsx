@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const INITIAL_HABITS = [
@@ -7,10 +8,37 @@ const INITIAL_HABITS = [
   { id: '3', name: 'Read 30 min', emoji: '📚', completed: false },
 ];
 
+const STORAGE_KEY = 'habits';
+
 export default function HomeScreen() {
   const [habits, setHabits] = useState(INITIAL_HABITS);
   const [formVisible, setFormVisible] = useState(false);
   const [newName, setNewName] = useState('');
+
+  // Load habits from storage on app start
+  useEffect(() => {
+    const loadHabits = async () => {
+      try {
+        const stored = await AsyncStorage.getItem(STORAGE_KEY);
+        if (stored) setHabits(JSON.parse(stored));
+      } catch (e) {
+        console.error('Failed to load habits', e);
+      }
+    };
+    loadHabits();
+  }, []);
+
+  // Save habits to storage whenever they change
+  useEffect(() => {
+    const saveHabits = async () => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
+      } catch (e) {
+        console.error('Failed to save habits', e);
+      }
+    };
+    saveHabits();
+  }, [habits]);
 
   const toggleHabit = (id: string) => {
     setHabits(habits.map(h =>
