@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { styles } from '../../styles/homeScreen';
+import { useTheme } from '../../context/ThemeContext';
+import { makeStyles } from '../../styles/homeScreen';
 import { Habit } from '../../types/habit';
 
 const EMOJI_OPTIONS = ['🏋️', '💧', '📚', '🏃', '🧘', '🥗', '😴', '💊', '🎯', '✍️', '🎸', '🧹', '💻', '🚴', '🍎', '🧠'];
@@ -13,6 +14,8 @@ export default function HomeScreen() {
   const [formVisible, setFormVisible] = useState(false);
   const [newName, setNewName] = useState('');
   const [newEmoji, setNewEmoji] = useState('');
+  const { colors, toggleTheme, theme } = useTheme();
+  const styles = makeStyles(colors);
 
   // Load habits from storage on app start
   useEffect(() => {
@@ -72,7 +75,13 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Habits 💪</Text>
+
+      <View style={styles.header}>
+        <Text style={styles.title}>My Habits 💪</Text>
+        <TouchableOpacity onPress={toggleTheme}>
+          <Text style={{ fontSize: 24 }}>{theme === 'light' ? '🌙' : '☀️'}</Text>
+        </TouchableOpacity>
+      </View>
 
       {habits.length === 0 && (
         <View style={styles.emptyState}>
