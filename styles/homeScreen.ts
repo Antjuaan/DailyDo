@@ -1,21 +1,28 @@
 import { StyleSheet } from 'react-native';
+import { lightColors } from '../context/ThemeContext';
 
-export const styles = StyleSheet.create({
+export const makeStyles = (colors: typeof lightColors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.background,
     paddingTop: 60,
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 24,
+    marginBottom: 4,
+    color: colors.title,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: colors.subtitle,
+    marginBottom: 20,
   },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -25,7 +32,7 @@ export const styles = StyleSheet.create({
     elevation: 2,
   },
   cardCompleted: {
-    backgroundColor: '#e8f5e9',
+    backgroundColor: colors.cardCompleted,
   },
   emoji: {
     fontSize: 24,
@@ -34,16 +41,17 @@ export const styles = StyleSheet.create({
   name: {
     flex: 1,
     fontSize: 16,
+    color: colors.text,
   },
   nameCompleted: {
     textDecorationLine: 'line-through',
-    color: '#aaa',
+    color: colors.textCompleted,
   },
   check: {
     fontSize: 20,
   },
   form: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -53,14 +61,15 @@ export const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: colors.inputBorder,
     paddingVertical: 8,
     fontSize: 16,
     marginBottom: 12,
+    color: colors.input,
   },
   emojiLabel: {
     fontSize: 14,
-    color: '#888',
+    color: colors.subtitle,
     marginBottom: 8,
   },
   emojiGrid: {
@@ -73,20 +82,20 @@ export const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 10,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.emojiOptionBg,
     alignItems: 'center',
     justifyContent: 'center',
   },
   emojiSelected: {
-    backgroundColor: '#c8e6c9',
+    backgroundColor: colors.emojiSelectedBg,
     borderWidth: 2,
-    borderColor: '#4CAF50',
+    borderColor: colors.emojiSelectedBorder,
   },
   emojiOptionText: {
     fontSize: 24,
   },
   btnConfirm: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.btnConfirm,
     borderRadius: 8,
     padding: 12,
     alignItems: 'center',
@@ -100,7 +109,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 32,
     right: 24,
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.btnAdd,
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -132,11 +141,19 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
     textAlign: 'center',
+    color: colors.title,
   },
   emptySubtitle: {
     fontSize: 15,
-    color: '#888',
+    color: colors.subtitle,
     textAlign: 'center',
     lineHeight: 22,
+    marginBottom: 8,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 4,
   },
 });
