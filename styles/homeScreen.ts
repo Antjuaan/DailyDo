@@ -5,7 +5,7 @@ export const makeStyles = (colors: typeof lightColors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    paddingTop: 60,
+    paddingTop: 80,
     paddingHorizontal: 20,
   },
   title: {
@@ -154,6 +154,6 @@ export const makeStyles = (colors: typeof lightColors) => StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 26,
   },
 });
