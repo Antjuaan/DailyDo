@@ -93,7 +93,8 @@ export default function HomeScreen() {
         <View style={styles.form}>
           <TextInput
             style={styles.input}
-            placeholder="Habit name..."
+            placeholder="Habit name"
+            placeholderTextColor={colors.placeholder}
             value={newName}
             onChangeText={setNewName}
             autoFocus
