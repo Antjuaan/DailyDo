@@ -26,6 +26,7 @@ export const makeStyles = (colors: typeof lightColors) => StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 4,
@@ -165,5 +166,24 @@ export const makeStyles = (colors: typeof lightColors) => StyleSheet.create({
   btnCancelText: {
     color: colors.subtitle,
     fontSize: 16,
+  },
+  celebration: {
+    position: 'absolute',
+    top: 160,
+    left: 20,
+    right: 20,
+    backgroundColor: '#4CAF50',
+    borderRadius: 16,
+    padding: 16,
+    alignItems: 'center' as const,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  celebrationText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

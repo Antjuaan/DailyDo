@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
+import HabitCard from '../../components/HabitCard';
 import { EMOJI_OPTIONS } from '../../constants/habits';
 import { useTheme } from '../../context/ThemeContext';
 import { loadHabits, saveHabits } from '../../storage/habitStorage';
@@ -17,6 +25,7 @@ export default function HomeScreen() {
 
   const { colors, toggleTheme, theme } = useTheme();
   const styles = makeStyles(colors);
+  const celebrationOpacity = useSharedValue(0);
 
   useEffect(() => {
     loadHabits().then(setHabits);
@@ -26,10 +35,22 @@ export default function HomeScreen() {
     saveHabits(habits);
   }, [habits]);
 
+  const checkAllCompleted = (updatedHabits: Habit[]) => {
+    const allDone = updatedHabits.length > 0 && updatedHabits.every(h => h.completed);
+    if (allDone) {
+      celebrationOpacity.value = withSequence(
+        withTiming(1, { duration: 400 }),
+        withDelay(1500, withTiming(0, { duration: 400 }))
+      );
+    }
+  };
+
   const toggleHabit = (id: string) => {
-    setHabits(habits.map(h =>
+    const updated = habits.map(h =>
       h.id === id ? { ...h, completed: !h.completed } : h
-    ));
+    );
+    setHabits(updated);
+    checkAllCompleted(updated);
   };
 
   const addHabit = () => {
@@ -81,6 +102,10 @@ export default function HomeScreen() {
     setEditEmoji('');
   };
 
+  const celebrationStyle = useAnimatedStyle(() => ({
+    opacity: celebrationOpacity.value,
+  }));
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -95,7 +120,7 @@ export default function HomeScreen() {
           <Text style={styles.emptyEmoji}>🌱</Text>
           <Text style={styles.emptyTitle}>No habits yet</Text>
           <Text style={styles.emptySubtitle}>Tap the + button to add your first habit and start tracking your daily routine.</Text>
-          <Text style={styles.emptySubtitle}>Long press on a habit to edit or delete it.</Text>
+          <Text style={styles.emptySubtitle}>Long press on a habit to edit or delete it</Text>
         </View>
       )}
 
@@ -103,25 +128,24 @@ export default function HomeScreen() {
         data={habits}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[styles.card, item.completed && styles.cardCompleted]}
+          <HabitCard
+            habit={item}
             onPress={() => toggleHabit(item.id)}
             onLongPress={() => onLongPress(item)}
-          >
-            <Text style={styles.emoji}>{item.emoji}</Text>
-            <Text style={[styles.name, item.completed && styles.nameCompleted]}>
-              {item.name}
-            </Text>
-            <Text style={styles.check}>{item.completed ? '✅' : '⬜'}</Text>
-          </TouchableOpacity>
+            styles={styles}
+          />
         )}
       />
+
+      <Animated.View style={[styles.celebration, celebrationStyle]} pointerEvents="none">
+        <Text style={styles.celebrationText}>🎉 All habits completed!</Text>
+      </Animated.View>
 
       {formVisible && (
         <View style={styles.form}>
           <TextInput
             style={styles.input}
-            placeholder="Habit name"
+            placeholder="Habit name..."
             placeholderTextColor={colors.placeholder}
             value={newName}
             onChangeText={setNewName}
