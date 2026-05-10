@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DarkTheme, DefaultTheme, ThemeProvider as NavThemeProvider } from '@react-navigation/native';
 import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -16,7 +15,7 @@ function RootLayoutNav() {
 
   useEffect(() => {
     const checkOnboarding = async () => {
-      await AsyncStorage.removeItem('onboarding_completed');
+      //await AsyncStorage.removeItem('onboarding_completed');
       const completed = await isOnboardingCompleted();
       if (!completed) {
         router.replace('/onboarding');
