@@ -4,6 +4,7 @@ import { DailyRecord, Habit } from '../types/habit';
 
 const LAST_RESET_KEY = 'last_reset';
 const HISTORY_KEY = 'history';
+const ONBOARDING_KEY = 'onboarding_completed';
 
 export const loadHabits = async (): Promise<Habit[]> => {
   try {
@@ -76,5 +77,22 @@ export const loadHistory = async (): Promise<DailyRecord[]> => {
   } catch (e) {
     console.error('Failed to load history', e);
     return [];
+  }
+};
+
+export const isOnboardingCompleted = async (): Promise<boolean> => {
+  try {
+    const value = await AsyncStorage.getItem(ONBOARDING_KEY);
+    return value === 'true';
+  } catch {
+    return false;
+  }
+};
+
+export const completeOnboarding = async (): Promise<void> => {
+  try {
+    await AsyncStorage.setItem(ONBOARDING_KEY, 'true');
+  } catch (e) {
+    console.error('Failed to save onboarding status', e);
   }
 };
